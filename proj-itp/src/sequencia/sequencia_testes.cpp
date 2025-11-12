@@ -1,6 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "../doctest.h"
-#include "sequencia.h"
+#include "../../../doctest.h"
+#include "../../descricao/etapa_0/sequencia.h"
 
 
 TEST_CASE("Testa a criação de uma sequência de inteiros (sem nenhum elemento)") {
