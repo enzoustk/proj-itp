@@ -77,7 +77,6 @@ public:
         conversor.clear();
 
         adicionarCor(Cor{r,g,b});
-
         }
     }
 };
