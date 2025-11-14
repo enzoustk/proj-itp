@@ -43,6 +43,9 @@ public:
         }
         return dados[indice];
     }
+    T& operator[](int indice) {
+        return dados[indice];
+    }
 
     void removerUltimo() {
         if (tamanho <= 0) {
@@ -50,4 +53,5 @@ public:
         }
         tamanho--;
     }
+
 };
