@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <sstream>
+#include <cmath>
+//#include <sstream>
 #include <fstream>
 using namespace std;
 
@@ -61,22 +62,45 @@ public:
         if (linha.empty()){
             continue;
         }
-        stringstream conversor;
-        int r,g,b;
+        //stringstream conversor;
+        Cor nova = converterHex(linha);
         
-        conversor << linha.substr(1,2);
-        conversor >> hex >> r;
-        conversor.clear();
+        //
+        //conversor << linha.substr(1,2);
+        //conversor >> hex >> r;
+        //conversor.clear();
 
-        conversor << linha.substr(3,2);
-        conversor >> hex >> g;
-        conversor.clear();
+        //conversor << linha.substr(3,2);
+        //conversor >> hex >> g;
+        //conversor.clear();
 
-        conversor << linha.substr(5,2);
-        conversor >> hex >> b;
-        conversor.clear();
+        //conversor << linha.substr(5,2);
+        //conversor >> hex >> b;
+        //conversor.clear();
 
-        adicionarCor(Cor{r,g,b});
+        adicionarCor(nova);
         }
+        
+    }
+    Cor converterHex(string& codigo){
+            int rgb[3];
+            for (int i = 0,j=1;i < 3;i++,j+=2){
+                string sub_codigo = codigo.substr(j,2);
+                int valor_a = (caractereHex(sub_codigo[0]) * 16);
+                int valor_b = caractereHex(sub_codigo[1]);
+                rgb[i] = valor_a + valor_b;
+            }
+            return Cor{rgb[0],rgb[1],rgb[2]};
+    }
+
+    int caractereHex(char c){
+        c = tolower(c);
+        if (c >= '0' && c <= '9'){
+            return c - '0';
+        }
+        if (c >= 'a' && c <= 'f'){
+            return c - 'a' + 10;
+        }
+        return 0;
     }
 };
