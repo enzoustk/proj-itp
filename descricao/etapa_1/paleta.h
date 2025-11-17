@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <cmath>
 //#include <sstream>
 #include <fstream>
 using namespace std;
@@ -82,7 +81,7 @@ public:
         }
         
     }
-    Cor converterHex(string& codigo){
+    Cor converterHex(const string& codigo){
             int rgb[3];
             for (int i = 0,j=1;i < 3;i++,j+=2){
                 string sub_codigo = codigo.substr(j,2);

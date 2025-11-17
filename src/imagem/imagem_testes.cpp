@@ -1,6 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "../doctest.h"
-#include "imagem.h"
+#include "../../doctest.h"
+#include "../../descricao/etapa_2/imagem.h"
 
 TEST_CASE("Testa a criação de uma imagem com largura e altura específicas") {
     Imagem img(100, 50);
