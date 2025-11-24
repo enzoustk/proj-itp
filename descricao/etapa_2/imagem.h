@@ -85,4 +85,41 @@ class Imagem{
         }
         return true;
     }
+
+    bool salvarPPM(const string& nomeArquivo) const {
+    // Verifica se há imagem válida
+    if (imagem == nullptr || linha == 0 || coluna == 0) {
+        return false;
+    }
+
+    ofstream arquivo(nomeArquivo);
+    if (!arquivo.is_open()) {
+        return false;
+    }
+
+    // Cabeçalho PPM (P3)
+    arquivo << "P3\n";
+    arquivo << coluna << " " << linha << "\n";
+    arquivo << 255 << "\n";
+
+    // Pixels
+    for (int i = 0; i < linha; i++) {
+        for (int j = 0; j < coluna; j++) {
+            // Garante que os valores estão no intervalo 0..255
+            int r = imagem[i][j].r;
+            int g = imagem[i][j].g;
+            int b = imagem[i][j].b;
+
+            if (r < 0) r = 0; if (r > 255) r = 255;
+            if (g < 0) g = 0; if (g > 255) g = 255;
+            if (b < 0) b = 0; if (b > 255) b = 255;
+
+            arquivo << r << " " << g << " " << b << " ";
+        }
+        arquivo << "\n";
+    }
+
+    arquivo.close();
+    return true;
+    }
 };
