@@ -1,5 +1,6 @@
 #include <string>
-//include <ifstream>
+#include <fstream>
+using namespace std;
 
 
 struct Pixel{
@@ -19,6 +20,7 @@ class Imagem{
                 delete[] imagem[i];
                 }
                 delete[] imagem;
+                imagem = nullptr;
             }
         linha = 0;
         coluna = 0;
@@ -26,7 +28,7 @@ class Imagem{
     
     void alocar(){
         imagem = new Pixel*[linha];
-        for(int i = 0;i < coluna;i++){
+        for(int i = 0;i < linha;i++){
             imagem[i] = new Pixel[coluna];
         }
     }
@@ -46,8 +48,8 @@ class Imagem{
         alocar();
     }
 
-    Pixel& operator()(int l,int c){
-        return imagem[l][c];
+    Pixel& operator()(int x,int y){
+        return imagem[y][x];
     }/////////////////////////////////////
 
     ~Imagem(){
@@ -56,6 +58,7 @@ class Imagem{
 
 
     bool lerPPM(const string& nomeArquivo){
+        desalocar();
         ifstream arquivo(nomeArquivo);
         if(!arquivo.is_open()){
             return false;
@@ -66,14 +69,18 @@ class Imagem{
             arquivo.close();
             return false;
         }
-        int novaLinha,novaColuna;
+        int novaLinha,novaColuna,numeroMaximo;
         arquivo >> novaColuna;
         arquivo >> novaLinha;
-        for (int i = 0;i < novaLinha;i++){
-            for(int j = 0;j < novaColuna;j++){
-                arquivo >> arquivo[i][j].r;
-                arquivo >> arquivo[i][j].g; 
-                arquivo >> arquivo[i][j].b; 
+        linha = novaLinha;
+        coluna = novaColuna;
+        alocar();
+        arquivo >> numeroMaximo;
+        for (int i = 0;i < linha;i++){
+            for(int j = 0;j < coluna;j++){
+                arquivo >> imagem[i][j].r;
+                arquivo >> imagem[i][j].g; 
+                arquivo >> imagem[i][j].b; 
             }
         }
         return true;
