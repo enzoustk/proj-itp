@@ -88,6 +88,7 @@ class Imagem{
                 arquivo >> imagem[i][j].b; 
             }
         }
+        arquivo.close();
         return true;
     }
 
@@ -118,6 +119,7 @@ class Imagem{
                 arquivo << imagem[i][j].r << " " << imagem[i][j].g << " " << imagem[i][j].b << endl;
             }
         }
+        arquivo.close();
         return true;
     }
 };
