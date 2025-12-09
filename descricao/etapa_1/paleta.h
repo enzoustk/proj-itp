@@ -1,6 +1,8 @@
+#ifndef PALETA_H   // <--- LINHA NOVA
+#define PALETA_H   // <--- LINHA NOVA
+
 #include <iostream>
 #include <string>
-//#include <sstream>
 #include <fstream>
 using namespace std;
 
@@ -61,22 +63,7 @@ public:
         if (linha.empty()){
             continue;
         }
-        //stringstream conversor;
         Cor nova = converterHex(linha);
-        
-        //
-        //conversor << linha.substr(1,2);
-        //conversor >> hex >> r;
-        //conversor.clear();
-
-        //conversor << linha.substr(3,2);
-        //conversor >> hex >> g;
-        //conversor.clear();
-
-        //conversor << linha.substr(5,2);
-        //conversor >> hex >> b;
-        //conversor.clear();
-
         adicionarCor(nova);
         }
         
@@ -103,3 +90,5 @@ public:
         return 0;
     }
 };
+
+#endif // <--- LINHA NOVA

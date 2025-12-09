@@ -1,8 +1,10 @@
+#ifndef IMAGEM_H   // <--- LINHA NOVA
+#define IMAGEM_H   // <--- LINHA NOVA
+
 #include <string>
 #include <fstream>
 #include <iostream>
 using namespace std;
-
 
 struct Pixel{
     int r;
@@ -19,10 +21,10 @@ class Imagem{
         if(imagem != nullptr){
             for(int i = 0;i < linha;i++){
                 delete[] imagem[i];
-                }
-                delete[] imagem;
-                imagem = nullptr;
             }
+            delete[] imagem;
+            imagem = nullptr;
+        }
         linha = 0;
         coluna = 0;
     }
@@ -38,7 +40,7 @@ class Imagem{
     Imagem() : linha(0), coluna(0),imagem(nullptr){}
 
     int obterAltura(){
-    return linha;
+        return linha;
     }
 
     int obterLargura(){
@@ -54,13 +56,12 @@ class Imagem{
     }
 
     const Pixel& operator()(int x, int y) const {
-    return imagem[y][x]; 
+        return imagem[y][x]; 
     }
 
     ~Imagem(){
         desalocar();
     }
-
 
     bool lerPPM(const string& nomeArquivo){
         desalocar();
@@ -69,7 +70,7 @@ class Imagem{
             return false;
         }
         string magic;
-        arquivo >> magic; // IGNORA WHITE SPACE E PEGA A PRIMEIRA COISA DO ARQUIVO ATE OUTRO WHITESPACE
+        arquivo >> magic; 
         if (magic != "P3"){
             arquivo.close();
             return false;
@@ -100,19 +101,17 @@ class Imagem{
         arquivo << "P3" << endl;
         arquivo << coluna << " " << linha << endl;
         int maiorValor = 0;
+        // Varredura para achar o maior valor (para o cabeçalho)
         for (int i = 0;i < linha;i++){
             for(int j = 0;j < coluna;j++){
-                if (imagem[i][j].r > maiorValor){
-                    maiorValor = imagem[i][j].r;
-                }
-                if (imagem[i][j].g > maiorValor){
-                    maiorValor = imagem[i][j].g;
-                }
-                if (imagem[i][j].b > maiorValor){
-                    maiorValor = imagem[i][j].b;
-                }
+                if (imagem[i][j].r > maiorValor) maiorValor = imagem[i][j].r;
+                if (imagem[i][j].g > maiorValor) maiorValor = imagem[i][j].g;
+                if (imagem[i][j].b > maiorValor) maiorValor = imagem[i][j].b;
             }
         }
+        // Se maiorValor for 0 (imagem preta), garante 255 para evitar erro em visualizadores
+        if (maiorValor == 0) maiorValor = 255; 
+
         arquivo << maiorValor << endl;
         for (int i = 0;i < linha;i++){
             for(int j = 0;j < coluna;j++){
@@ -123,3 +122,5 @@ class Imagem{
         return true;
     }
 };
+
+#endif // <--- LINHA NOVA
