@@ -7,6 +7,9 @@
 #include <fstream>
 #include <vector>
 
+#include "../../descricao/etapa_1/paleta.h"
+#include "../../descricao/etapa_2/imagem.h"
+
 class Terreno {
 private:
     int n;
@@ -119,7 +122,7 @@ public:
     }
 
     // Método principal para gerar o terreno
-    void gerarAleatorio(int novoN, double rugosidade) {
+    void gerarAleatorio(int novoN, double rugosidade,double maxAltura = 10.0) {
         // 1. Reconfigurar matriz se necessário
         desalocar();
         n = novoN;
@@ -131,7 +134,7 @@ public:
         std::mt19937 gen(rd());
         
         // Intervalo inicial de deslocamento aleatório
-        double range = 100.0; // Pode parametrizar se quiser
+        double range = maxAltura;
         std::uniform_real_distribution<double> distStart(0, range);
 
         // 3. Inicializar os 4 cantos
@@ -166,6 +169,47 @@ public:
             // Reduz o alcance aleatório para a próxima iteração
             range *= rugosidade;
         }
+    }
+
+     Imagem gerarImagem(Paleta& paleta) {
+        Imagem img(tamanho, tamanho); 
+
+        for (int i = 0; i < tamanho; i++) {       // i = Linhas (eixo Y na imagem)
+            for (int j = 0; j < tamanho; j++) {   // j = Colunas (eixo X na imagem)
+                
+                // 1. Pega altura
+                double alt = altitude[i][j];
+                
+                // 2. Converte para índice da paleta
+                int indice = (int)alt; 
+                if (indice < 0) indice = 0;
+                if (indice >= paleta.obterTamanho()) indice = paleta.obterTamanho() - 1;
+
+                // 3. Pega a cor
+                Cor c = paleta.obterCor(indice);
+                
+                Pixel p;
+                p.r = c.r;
+                p.g = c.g;
+                p.b = c.b;
+
+                // 4. Sombreamento (Compara com vizinho i-1, j-1)
+                if (i > 0 && j > 0) {
+                    double altNoroeste = altitude[i-1][j-1];
+                    
+                    // Se a altura atual é menor que a do noroeste, escurece
+                    if (alt < altNoroeste) {
+                        p.r = (int)(p.r * 0.5);
+                        p.g = (int)(p.g * 0.5);
+                        p.b = (int)(p.b * 0.5);
+                    }
+                }
+                
+                // 5. Define pixel (coluna j, linha i)
+                img(j, i) = p;
+            }
+        }
+        return img;
     }
 
     // Salvar em arquivo de texto simples
